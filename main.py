@@ -53,7 +53,7 @@ for follow in follow_list[0]:
 
 
 
-s_count = 10
+s_count = 30
 results = client.search_recent_tweets(query=keyword, max_results=s_count, user_fields = "name", expansions=["author_id","referenced_tweets.id"],)
 
 for result in results.data: 
@@ -67,5 +67,5 @@ for result in results.data:
     if result.author_id not in follow_lists:
         client.follow_user(result.author_id)
         print(result.author_id)
-#10秒停止する
-        time.sleep(60)
+#61秒停止する
+        time.sleep(61)
