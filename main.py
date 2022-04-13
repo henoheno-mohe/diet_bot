@@ -45,27 +45,33 @@ keyword = "#ダイエット垢さんと繋がりたい -is:retweet"
 follow_cnt = 0
 
 # 現在のフォローリストを作成
-follow_list = client.get_users_following(id="1475721163594952706",max_results=100)
+follow_list = client.get_users_following(id="1489078955772559364",max_results=1000)
 follow_lists = []
 
 for follow in follow_list[0]:
     follow_lists.append(follow.id)
 
+followers_list = client.get_users_following(id="1489078955772559364", max_results = 50)
 
 
-s_count = 30
-results = client.search_recent_tweets(query=keyword, max_results=s_count, user_fields = "name", expansions=["author_id","referenced_tweets.id"],)
+# フォローを解除する
 
-for result in results.data: 
-    print(result.author_id)
-    # print(result.referenced_tweets)
+#　フォロー解除数
+unfollow_cnt = 0
+followers_lists = []
+for follower in followers_list.data:
+    followers_lists.append(follower.id)
 
+for follow_id in follow_list.data:
 
-for result in results.data: 
-    client.like(tweet_id=result.id)
-#フォローリストにこのツイート主がいなければフォローする。
-    if result.author_id not in follow_lists:
-        client.follow_user(result.author_id)
-        print(result.author_id)
-#61秒停止する
-        time.sleep(61)
+    #フレンドがフォロワーにいない（相互フォローではない）
+    if follow_id.id not in followers_list:
+        if unfollow_cnt <= 20:
+            client.unfollow_user(target_user_id=follow_id.id)
+            print("フォローを解除したユーザ： {}".format(follow_id.name))
+            time.sleep(60)
+            unfollow_cnt += 1
+        else:
+            print('フォロー解除数が100人を超えたため、処理停止')
+            break
+
