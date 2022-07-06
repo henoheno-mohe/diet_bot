@@ -69,7 +69,7 @@ for follow_id in follow_list.data:
         if unfollow_cnt <= 20:
             client.unfollow_user(target_user_id=follow_id.id)
             print("フォローを解除したユーザ： {}".format(follow_id.name))
-            time.sleep(60)
+            time.sleep(61)
             unfollow_cnt += 1
         else:
             print('フォロー解除数が100人を超えたため、処理停止')
